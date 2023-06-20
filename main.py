@@ -2,7 +2,7 @@ import paramiko
 import subprocess
 
 # SSH connection parameters
-hostname = '16.170.7.88'
+hostname = '13.50.203.46'
 port = 22
 username = 'ubuntu'
 private_key_path = '/home/mario/.ssh/havenojob.pem'
@@ -19,9 +19,7 @@ excluded_items = ['node_modules/', 'client/node_modules/', '.git/']
 rsync_args = ['-av', '-e', f'ssh -i {private_key_path}']
 
 try:
-
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
-
     # Connect to the SSH server
     ssh.connect(hostname, port, username, pkey=private_key)
 
@@ -57,7 +55,7 @@ try:
     subprocess.run(['rsync'] + rsync_args)
 
     # Start the containers ~ This will take a bit
-    stdin, stdout, stderr = ssh.exec_command(f'cd ./havenojob && sudo docker-compose up')
+    stdin, stdout, stderr = ssh.exec_command(f'cd ./havenojob && sudo docker-compose up --build -d')
     print(stdout.read().decode())
 
 finally:
