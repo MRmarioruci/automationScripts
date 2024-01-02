@@ -2,7 +2,7 @@ import paramiko
 import subprocess
 
 # SSH connection parameters
-hostname = '13.50.203.46'
+hostname = '16.171.136.54'
 port = 22
 username = 'ubuntu'
 private_key_path = '/home/mario/.ssh/havenojob.pem'
@@ -11,9 +11,9 @@ private_key_path = '/home/mario/.ssh/havenojob.pem'
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-local_folder_path = '../havenojob'
-excluded_local_folder_path = '../havenojob/node_modules'
-remote_folder = '~/havenojob'
+local_folder_path = '../Conferience'
+excluded_local_folder_path = '../Conferience/node_modules'
+remote_folder = '~/Conferience'
 remote_folder_path = f'{username}@{hostname}:~/'
 excluded_items = ['node_modules/', 'client/node_modules/', '.git/']
 rsync_args = ['-av', '-e', f'ssh -i {private_key_path}']

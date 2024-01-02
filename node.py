@@ -2,24 +2,24 @@ import paramiko
 import subprocess
 
 # SSH connection parameters
-hostname = '13.50.203.46'
+hostname = '52.211.143.31'
 port = 22
 username = 'ubuntu'
-private_key_path = '/home/mario/.ssh/havenojob.pem'
+private_key_path = '/home/mario/.ssh/id_rsa'
 
 # Create an SSH client
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-local_folder_path = '../havenojob'
-excluded_local_folder_path = '../havenojob/node_modules'
-remote_folder = '~/havenojob'
+local_folder_path = '../interviewerAI'
+excluded_local_folder_path = '../interviewerAI/node_modules'
+remote_folder = '~/interviewerAI'
 remote_folder_path = f'{username}@{hostname}:~/'
-excluded_items = ['node_modules/', 'client/node_modules/', '.git/']
+excluded_items = ['server/node_modules/', 'client/node_modules/', '.git/', 'server/core/database.js']
 rsync_args = ['-av', '-e', f'ssh -i {private_key_path}']
 
 try:
-    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path, 'smilemalaka0343')
     # Connect to the SSH server
     ssh.connect(hostname, port, username, pkey=private_key)
 
@@ -55,8 +55,8 @@ try:
     subprocess.run(['rsync'] + rsync_args)
 
     # Start the containers ~ This will take a bit
-    #stdin, stdout, stderr = ssh.exec_command(f'cd ./havenojob && sudo docker-compose up --build -d')
-    #print(stdout.read().decode())
+    stdin, stdout, stderr = ssh.exec_command(f'cd ./interviewerAI && sudo docker-compose up --build -d')
+    print(stdout.read().decode())
 
 finally:
     ssh.close()
